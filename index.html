@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
+<!-- saved from url=(0046)file:///C:/Users/hcowan/Downloads/index_6.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Huntsville Prospecting | Henry Cowan CFP®</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./2Huntsville Prospecting _ Henry Cowan CFP®_files/supabase-js@2"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
 
@@ -250,7 +250,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--k
 .toast {
   position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
   background: var(--kp-dark); color: var(--white); padding: 10px 20px;
-  border-radius: 8px; font-size: 13px; font-weight: 500; z-index: 300;
+  border-radius: 8px; font-size: 13px; font-weight: 500; z-index: 500; white-space: nowrap;
   opacity: 0; transition: opacity .3s; pointer-events: none;
 }
 .toast.show { opacity: 1; }
@@ -272,12 +272,12 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--k
     <div class="setup-sub">Huntsville Prospecting Dashboard — One Time Setup</div>
     <div class="setup-field">
       <label class="setup-label">Supabase Project URL</label>
-      <input type="text" class="setup-input" id="sb-url" placeholder="https://akwujlgftplqomtrletb.supabase.co" />
+      <input type="text" class="setup-input" id="sb-url" placeholder="https://akwujlgftplqomtrletb.supabase.co">
       <div style="font-size:11px;color:var(--kp-gray);margin-top:5px">Your URL is: <strong style="color:var(--kp-dark);user-select:all">https://akwujlgftplqomtrletb.supabase.co</strong></div>
     </div>
     <div class="setup-field">
       <label class="setup-label">Supabase Anon Key</label>
-      <input type="text" class="setup-input" id="sb-key" placeholder="eyJ..." />
+      <input type="text" class="setup-input" id="sb-key" placeholder="eyJ...">
       <div style="font-size:11px;color:var(--kp-gray);margin-top:5px">Paste your full anon key starting with eyJ from Supabase API Keys</div>
     </div>
     <button class="setup-btn" onclick="connect()">Connect Dashboard</button>
@@ -731,5 +731,6 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 </script>
-</body>
-</html>
+
+
+</body></html>
