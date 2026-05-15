@@ -372,6 +372,15 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--k
         <option value="no">No</option>
       </select>
     </div>
+    <div class="fg">
+      <div class="fl">Outreach</div>
+      <select class="fs" id="f-outreach" onchange="applyFilters()" style="min-width:110px">
+        <option value="">All</option>
+        <option value="Easy">Easy</option>
+        <option value="Moderate">Moderate</option>
+        <option value="Hard">Hard</option>
+      </select>
+    </div>
     <div class="fsep"></div>
     <button class="btn-reset" onclick="resetFilters()">Reset</button>
   </div>
@@ -391,6 +400,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--k
     <div class="ph-title">
       <div class="ph-name" id="p-name"></div>
       <div class="ph-sector" id="p-sector"></div>
+      <div id="p-outreach" style="margin-top:6px;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500;display:inline-block"></div>
     </div>
     <div class="ph-score">
       <div class="ph-snum" id="p-score"></div>
@@ -489,6 +499,11 @@ function setSyncing(active, err=false) {
 
 // ── RENDER CARDS ────────────────────────────────────────────────
 function scoreClass(s) { return s >= 8 ? 'sh' : s >= 5 ? 'sm' : 'sl'; }
+function outreachStyle(d) {
+  if (d === 'Easy') return 'background:#E8F5EE;color:#1a7a4a;border:1px solid #A8D5B8;';
+  if (d === 'Hard') return 'background:#FEE8E8;color:#c0392b;border:1px solid #F5A8A8;';
+  return 'background:#FEF8E8;color:#7a4a00;border:1px solid #F5D99A;';
+}
 function statusClass(s) {
   if (s === 'Not Contacted') return 'st-nc';
   if (s === 'Contacted') return 'st-co';
@@ -533,7 +548,10 @@ function renderCards(data) {
           <div class="st-dot"></div>
           <div class="st-txt">${c.status||'Not Contacted'}</div>
         </div>
-        <div class="card-arr">→</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500;${outreachStyle(c.outreach_difficulty)}">${c.outreach_difficulty||'Moderate'}</span>
+          <div class="card-arr">→</div>
+        </div>
       </div>
     </div>`).join('');
 }
@@ -545,6 +563,7 @@ function applyFilters() {
   const score = document.getElementById('f-score').value;
   const status = document.getElementById('f-status').value;
   const fed = document.getElementById('f-fed').value;
+  const outreach = document.getElementById('f-outreach').value;
 
   const filtered = allCompanies.filter(c => {
     if (search && !c.name.toLowerCase().includes(search)) return false;
@@ -555,13 +574,14 @@ function applyFilters() {
     if (status && c.status !== status) return false;
     if (fed === 'yes' && !c.federal_contractor) return false;
     if (fed === 'no' && c.federal_contractor) return false;
+    if (outreach && c.outreach_difficulty !== outreach) return false;
     return true;
   });
   renderCards(filtered);
 }
 
 function resetFilters() {
-  ['f-search','f-sector','f-score','f-status','f-fed'].forEach(id => {
+  ['f-search','f-sector','f-score','f-status','f-fed','f-outreach'].forEach(id => {
     const el = document.getElementById(id);
     if (el.tagName === 'INPUT') el.value = '';
     else el.value = '';
@@ -577,15 +597,16 @@ function openPanel(id) {
 
   document.getElementById('p-name').textContent = c.name;
   document.getElementById('p-sector').textContent = c.sector + (c.federal_contractor ? ' · Federal Contractor' : '') + (c.is_public ? ' · Publicly Traded' : ' · Private');
+  const outreachEl = document.getElementById('p-outreach');
+  outreachEl.textContent = (c.outreach_difficulty||'Moderate') + ' Outreach';
+  outreachEl.style.cssText = outreachStyle(c.outreach_difficulty||'Moderate');
   document.getElementById('p-score').textContent = c.opportunity_score;
   document.getElementById('p-score').className = 'ph-snum ' + scoreClass(c.opportunity_score);
 
   const scoreBreakdown = [
-    ['Comp Level', c.score_comp],
-    ['Benefits Complexity', c.score_benefits],
-    ['Planning Need', c.score_planning],
-    ['Workforce Profile', c.score_workforce],
-    ['HR Access', c.score_hr_access]
+    ['Compensation Level (40%)', c.score_comp],
+    ['Benefits Complexity (40%)', c.score_benefits],
+    ['Workforce Profile Fit (20%)', c.score_workforce]
   ].map(([label, val]) => `
     <div class="sbi">
       <div class="sbl">${label}</div>
